@@ -27,6 +27,7 @@ app.use('/signup',signupRouter)
 app.use('/home',homeRouter)
 app.use('/get',getRouter)
 app.use('/filter',filterRouter)
+
 app.get ('/',(req,res)=>{
 	res.redirect('/home')
 })
