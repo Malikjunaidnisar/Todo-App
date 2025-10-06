@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Todo Page</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            body {
+                font-family: "Inter", sans-serif;
+                background-color: #f3f4f6;
+                margin: 0;
+                padding: 20px;
+                color: #333;
+                font-size: 16px; /* Base font size for small screens */
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            h1 {
+                color: #2563eb;
+                text-align: center;
+                margin-bottom: 10px;
+                font-size: 2.5rem; /* Larger base for h1 */
+            }
+            h3 {
+                color: #2563eb;
+                margin-bottom: 15px;
+                font-size: 1.5rem;
+            }
+            form {
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+            label {
+                display: block;
+                margin-bottom: 10px;
+                font-weight: 500;
+            }
+            input[type="text"] {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #d1d5db;
+                border-radius: 4px;
+                font-size: 16px;
+            }
+            #task-button {
+                background-color: #2563eb;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                width: 100%;
+                margin-top: 10px;
+            }
+            #task-button:hover {
+                background-color: #1d4ed8;
+            }
+            .task-list {
+                list-style: none;
+                padding: 0;
+            }
+            .task-item {
+                background: white;
+                margin-bottom: 15px;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .task-checkbox {
+                margin-right: 10px;
+                transform: scale(1.2);
+            }
+            .task-text {
+                flex-grow: 1;
+                margin-left: 10px;
+                font-weight: 500;
+            }
+            .task-actions {
+                display: flex;
+                gap: 10px;
+            }
+            .task-actions button {
+                padding: 5px 10px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            .update-btn {
+                background-color: #f59e0b;
+                color: white;
+            }
+            .update-btn:hover {
+                background-color: #d97706;
+            }
+            .delete-btn {
+                background-color: #ef4444;
+                color: white;
+            }
+            .delete-btn:hover {
+                background-color: #dc2626;
+            }
+            .status {
+                font-size: 14px;
+                font-weight: 500;
+                margin-left: 10px;
+            }
+            .status.incomplete {
+                color: #6b7280;
+            }
+            .status.completed {
+                color: #10b981;
+            }
+            .status.in-progress {
+                color: #f59e0b;
+            }
+            .complete {
+                text-decoration: line-through;
+            }
+            .uncomplete {
+                text-decoration: none;
+            }
+            /* Hide original buttons if needed; these are placeholders */
+            .task-item button:not(.update-btn):not(.delete-btn) {
+                display: none;
+            }
+            
+            .empty-message {
+                /* Center the text and give it space */
+                text-align: center;
+                padding: 50px 20px;
+                margin: 50px auto;
+                
+                /* Responsive Font Size */
+                /* Use 'vw' (Viewport Width) unit. This size is 3% of the viewport width. */
+                /* This will make the text scale up and down with the browser size. */
+                font-size: 3vw; 
+                
+                /* Ensure a minimum size so it's readable on large screens */
+                min-font-size: 24px; 
+                
+                /* Make the text bold and a bit subdued in color */
+                font-weight: 600;
+                color: #888; /* A light grey color */
+                
+                /* Optional: Add a light border to frame it */
+                border: 2px dashed #ddd;
+                border-radius: 10px;
+                max-width: 90%; /* To prevent it from stretching across very wide screens */
+            }
+            
+            /* NEW FILTER STYLES */
+            .filter-container {
+                display: flex;
+                justify-content: flex-end; /* Align the filter to the right */
+                align-items: center;
+                margin-bottom: 15px;
+                padding: 10px 0;
+            }
+            #status-filter {
+                padding: 8px 12px;
+                border: 1px solid #d1d5db;
+                border-radius: 4px;
+                font-size: 16px;
+                background-color: white;
+                font-weight: 500;
+                color: #333;
+            }
+            
+            /* --- Media Query for Small Screens (e.g., Mobile Phones) --- */
+            /* This ensures the font doesn't become too small or too large on specific devices. */
+            @media (max-width: 600px) {
+                .empty-message {
+                    /* On small screens, fix the font size to a readable pixel value */
+                    font-size: 24px; 
+                    padding: 30px 15px; /* Adjust padding */
+                }
+                .filter-container {
+                    justify-content: space-between; /* Space out label and select */
+                }
+            }
+            
+
+            /* Media Query for Larger Screens (e.g., tablets and desktops) */
+            @media (min-width: 768px) {
+                body {
+                    padding: 40px;
+                    font-size: 18px; /* Increase base font size */
+                }
+                .container {
+                    max-width: 900px; /* Wider container for larger screens */
+                }
+                h1 {
+                    font-size: 3.5rem; /* Even larger header */
+                    margin-bottom: 20px;
+                }
+                h3 {
+                    font-size: 2rem;
+                    margin-bottom: 25px;
+                }
+                form {
+                    padding: 30px; /* More padding in form */
+                    margin-bottom: 30px;
+                }
+                input[type="text"] {
+                    padding: 15px; /* Larger input fields */
+                    font-size: 18px;
+                }
+                #task-button {
+                    padding: 15px 30px;
+                    font-size: 18px;
+                    margin-top: 15px;
+                }
+                .task-item {
+                    padding: 25px; /* Larger task cards */
+                    margin-bottom: 25px;
+                }
+                .task-checkbox {
+                    transform: scale(1.5); /* Slightly larger checkbox */
+                }
+                .task-text {
+                    font-size: 1.1em; /* Relative increase */
+                    margin-left: 15px;
+                }
+                .task-actions {
+                    gap: 15px;
+                }
+                .task-actions button {
+                    padding: 10px 15px; /* Larger action buttons */
+                    font-size: 16px;
+                }
+                .status {
+                    font-size: 16px;
+                    margin-left: 15px;
+                }
+            }
+
+            /* Media Query for Very Large Screens (e.g., wide desktops) */
+            @media (min-width: 1200px) {
+                .container {
+                    max-width: 1200px; /* Even wider for extra-large screens */
+                }
+                body {
+                    padding: 60px;
+                }
+                form {
+                    padding: 40px;
+                }
+                .task-item {
+                    padding: 35px;
+                }
+                h1 {
+                    font-size: 4rem;
+                }
+                h3 {
+                    font-size: 2.5rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div>
+                <h1>Welcome User</h1>
+            </div>
+            <div>
+                <h3>What's on your Mind Today</h3>
+            </div>
+            <form>
+                <div>
+                    <label for="task-input">Enter Task Here</label>
+                    <input
+                        type="text"
+                        id="task-input"
+                        name="taskinput"
+                        placeholder="Add a new task..."
+                    />
+                </div>
+                <div>
+                	<p id="error-paragragh" class="error-message"></p>
+                </div>
+                <div>
+                    <button  type="submit" id="task-button">Submit</button>
+                </div>
+            </form>
+            
+            <div class="filter-container">
+                <label for="status-filter">Filter:</label>
+                <select id="status-filter" onchange="filterTasks()">
+                    <option value="all">All Tasks</option>
+                    <option value="incomplete">Incomplete</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+            
+            <ul class="task-list">
+                </ul>
+        </div>
+        
+        <script>
+            // --- NEW FUNCTION: filterTasks() (REQUIRED FOR FUNCTIONALITY) ---
+                const selectedStatus = document.getElementById('status-filter')
+                selectedStatus.addEventListener("change",filterTasks);
+           async function filterTasks() {
+           if(selectedStatus.value == "all"){
+           	 return allTodos()
+           }
+           
+				const res = await fetch(`http://localhost:3000/filter/${selectedStatus.value}`);
+				          const data = await res.json();
+				          const parentList = document.querySelector(".task-list");
+				          parentList.innerHTML = '';
+				       if(data.length === 0) {
+				
+				              let bodyTag = document.querySelector('body')
+				              parentList.innerHTML = `<p class="empty-message">No Task Add</p>`
+				              return
+				          }
+				
+				          for (let i = 0; i < data.length; i++) {
+				
+				             let uniqueId = i + 1;
+				              // MODIFIED: Added data-status attribute to the <li> for the filter to work
+				              let childItem = `<li class="task-item" data-status="${data[i].todoStatus}">
+				                                  <label for="task${uniqueId}">
+				                                      <input
+				                                          type="checkbox"
+				                                          id="task${uniqueId}"
+				                                          class="task-checkbox"
+				                                          ${data[i].todoStatus === 'completed' ? 'checked' : ''}
+				                                      />
+				                                      <span
+				                                          id="text${uniqueId}"
+				                                          class="task-text ${data[i].todoStatus === 'completed' ? 'complete' : ''}"
+				                                      >
+				                                          ${data[i].todo}
+				                                      </span>
+				                                  </label>
+				                                  <div class="task-actions">
+				                                      <button class="update-btn">Update</button>
+				                                      <button class="delete-btn">Delete</button>
+				                                  </div>
+				                                  <p id="status${uniqueId}" class="status ${data[i].todoStatus === 'complete' ? 'complete' : 'incomplete'}">
+				                                      ${data[i].todoStatus}
+				                                  </p>
+				                              </li>`;
+				
+				
+				              parentList.insertAdjacentHTML('beforeend', childItem);
+				          }
+            }
+            
+            async function allTodos() {
+                const res = await fetch('http://localhost:3000/alltodos');
+                const data = await res.json();
+                const parentList = document.querySelector(".task-list");
+                parentList.innerHTML = ''; 
+              if(data.length === 0) {
+               
+                	let bodyTag = document.querySelector('body')
+                	parentList.innerHTML = `<p class="empty-message">No Task Add</p>`
+                	return
+                }
+               
+                for (let i = 0; i < data.length; i++) {
+            
+                   let uniqueId = i + 1; 
+                    // MODIFIED: Added data-status attribute to the <li> for the filter to work
+                    let childItem = `<li class="task-item" data-status="${data[i].todoStatus}">
+                                        <label for="task${uniqueId}">
+                                            <input
+                                                type="checkbox"
+                                                id="task${uniqueId}"
+                                                class="task-checkbox"
+                                                ${data[i].todoStatus === 'completed' ? 'checked' : ''}
+                                            />
+                                            <span 
+                                                id="text${uniqueId}" 
+                                                class="task-text ${data[i].todoStatus === 'completed' ? 'complete' : ''}"
+                                            >
+                                                ${data[i].todo}
+                                            </span>
+                                        </label>
+                                        <div class="task-actions">
+                                            <button class="update-btn">Update</button>
+                                            <button class="delete-btn">Delete</button>
+                                        </div>
+                                        <p id="status${uniqueId}" class="status ${data[i].todoStatus === 'complete' ? 'complete' : 'incomplete'}">
+                                            ${data[i].todoStatus}
+                                        </p>
+                                    </li>`;
+                    
+                    
+                    parentList.insertAdjacentHTML('beforeend', childItem);
+                }
+                
+            }
+            
+            allTodos();
+        
+            // --- EVENT DELEGATION LOGIC (NO CHANGE) ---
+          const taskList = document.querySelector(".task-list");
+        
+            // 2. Attach a single event listener to the parent container
+            taskList.addEventListener('change', async (e) => {
+                // 3. Check if the element that triggered the change event is a checkbox
+                if (e.target.classList.contains('task-checkbox')) {
+                    const checkbox = e.target;
+                    
+                    // The <span> with the text is the next sibling of the <input> inside the <label>
+                    // Target is <input> -> parent is <label> -> next sibling of <input> is <span>
+                    const taskTextSpan = checkbox.nextElementSibling;
+                    
+                    // The <p> with the status is outside the <label> but inside the <li>
+                    // Target is <input> -> parent is <label> -> parent's parent is <li>
+                    // The status <p> is the last element in the <li>, so we find it relative to the <li>
+                    const listItem = checkbox.closest('.task-item');
+                    const statusParagraph = listItem.querySelector('.status');
+                    
+                    if (checkbox.checked) {
+                        // Apply strikethrough class
+                        taskTextSpan.classList.add('complete');
+                        
+                        // Update status text
+                        statusParagraph.innerText = 'completed';
+                        statusParagraph.classList.remove('incomplete');
+                    	let itemTotoUpdate = listItem.querySelector('.task-text').innerText
+						let data = {
+							status:"completed"
+						}
+                    	const res = await fetch(`http://localhost:3000/get/${itemTotoUpdate}`,{
+                    		method:"put",
+                    		headers:{
+                    			"Content-type":"application/json"
+                    		},
+                    		body:JSON.stringify(data)
+                    	})
+                        // REQUIRED CHANGE FOR FILTER: Update the data-status attribute
+                        const fdata = res.json();
+                        window.location.href=`http://localhost:3000${fdata.href}`
+                        
+                    } else {
+                        // Remove strikethrough class
+                        taskTextSpan.classList.remove('complete');
+                        
+                        // Update status text
+                        statusParagraph.innerText = 'incomplete';
+                        statusParagraph.classList.remove('complete');
+                    	let itemTotoUpdate = listItem.querySelector('.task-text').innerText
+                    	let data = {
+                    	          status:"incomplete"
+                    	      }
+                    	      const res = await fetch(`http://localhost:3000/get/${itemTotoUpdate}`,{
+                    	          method:"put",
+                    	          headers:{
+                    	              "Content-type":"application/json"
+                    	          },
+                    	          body:JSON.stringify(data)
+                    	      })
+                        // REQUIRED CHANGE FOR FILTER: Update the data-status attribute
+                        const fdata = res.json();
+                        window.location.href=`http://localhost:3000${fdata.href}`
+                    }
+                    
+                    // Immediately re-run the filter after status change to update the displayed list
+                    filterTasks();
+                }
+            });
+        
+            // --- SUBMIT BUTTON LOGIC (NO CHANGE) ---
+            
+            const submitButton = document.querySelector("#task-button");
+            
+            submitButton.addEventListener('click', async (e) => {
+                if(submitButton.innerText === "Submit"){
+                e.preventDefault();
+                
+                const taskInput = document.querySelector("#task-input");
+                if (!taskInput.value) {
+                    let errorParagraph = document.querySelector("#error-paragragh");
+                    return errorParagraph.innerText = "This field can't be Empty";
+                }
+            
+                	
+                const data = {
+                    task: taskInput.value
+                };
+				
+					
+                const res = await fetch('http://localhost:3000/home', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+        
+                const fdata = await res.json();
+                
+                // Assuming 'data.href' is the correct property name from your POST response
+                window.location.href = `http://localhost:3000${fdata.href}`;
+                }
+            });
+
+                
+               function saveData (){
+               	
+              if(submitButton.innerText ===  "Save Update"){
+               	const oldValue= document.querySelector('#task-input').value
+               submitButton.addEventListener("click",async(e)=>{
+               	e.preventDefault()
+               	
+               	const taskInputValue= document.querySelector('#task-input').value
+               	if(!taskInputValue){
+               		let errorParagraph = document.querySelector("#error-paragragh");
+               		return errorParagraph.innerText = "This field can't be Empty";
+               	}
+               	let inputData={
+               		task:taskInputValue
+               	}
+               	const res = await fetch(`http://localhost:3000/get/${oldValue}`,{
+               		method:"put",
+               		headers:{
+               			"Content-Type":"application/json"
+               		},
+               		body:JSON.stringify(inputData)
+               		
+               	})
+               	const data = await res.json()
+               	window.location.href=`http://localhost:3000${data.href}`
+               	//alert(data.href)
+               
+               })
+			
+               	}
+               } 	
+                
+            
+           const parent = document.querySelector('.task-list')
+            parent.addEventListener("click",async (e)=>{
+            	
+            	const target = e.target
+            
+            	if(target.classList.contains('update-btn')){
+            	const li = target.closest('.task-item')
+            	const deleteBtn = document.querySelectorAll('.delete-btn')
+            	deleteBtn.forEach(btn=>{
+            		
+            	btn.disabled = true
+            	})
+            	const liText = li.querySelector('.task-text').innerText
+            		if(target.innerText=="Update"){
+            			const res = await fetch(`http://localhost:3000/home/todo/${liText}`)
+            			const data = await res.json()
+                		const taskInput = document.querySelector("#task-input");
+            			const submitButton = document.querySelector("#task-button");
+            			submitButton.innerText = "Save Update"
+                		taskInput.value=data.todo
+                		window.scrollTo({
+                			top:0,
+                			behavior:'smooth'
+                		})
+                	
+
+            		}
+            	
+              
+            		saveData()
+       
+            	
+            		
+            	}
+            })
+			
+			parent.addEventListener("click",async(e)=>{
+				const target = e.target
+				if(target.classList.contains('delete-btn')){
+					const li = target.closest('.task-item')
+					const liText = li.querySelector('.task-text').innerText
+					const res = await fetch(`http://localhost:3000/home/todo/${liText}`,{
+						method:'delete'
+					})
+					const data = await res.json()
+					window.location.href =`http://localhost:3000${data.href}`
+					   
+				}
+
+				
+			})
+        </script>
+        
+    </body>
+</html>
