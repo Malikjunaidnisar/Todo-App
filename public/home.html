@@ -449,7 +449,7 @@
                     		body:JSON.stringify(data)
                     	})
                         // REQUIRED CHANGE FOR FILTER: Update the data-status attribute
-                        const fdata = res.json();
+                        const fdata = await res.json();
                         window.location.href=`https://todo-app-f8vi.onrender.com${fdata.href}`
                         
                     } else {
@@ -471,7 +471,7 @@
                     	          body:JSON.stringify(data)
                     	      })
                         // REQUIRED CHANGE FOR FILTER: Update the data-status attribute
-                        const fdata = res.json();
+                        const fdata = await res.json();
                         window.location.href=`https://todo-app-f8vi.onrender.com/${fdata.href}`
                     }
                     
