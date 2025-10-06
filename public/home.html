@@ -472,7 +472,7 @@
                     	      })
                         // REQUIRED CHANGE FOR FILTER: Update the data-status attribute
                         const fdata = await res.json();
-                        window.location.href=`https://todo-app-f8vi.onrender.com/${fdata.href}`
+                        window.location.href=`https://todo-app-f8vi.onrender.com${fdata.href}`
                     }
                     
                     // Immediately re-run the filter after status change to update the displayed list
