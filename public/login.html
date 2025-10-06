@@ -248,7 +248,7 @@
         	userPassword:passwordInput.value
         }
         
-        const res = await fetch('http://localhost:3000/login',{
+        const res = await fetch('https://todo-app-f8vi.onrender.com/login',{
         	method:"POST",
         	headers:{
         		"Content-Type":"application/json"
@@ -263,7 +263,7 @@
         	paragraph.classList.add("error-message-show")
 			paragraph.innerText = data.err
 		}
-		window.location.href=`http://localhost:3000${data.href}`
+		window.location.href=`https://todo-app-f8vi.onrender.com${data.href}`
         })
       
     </script>

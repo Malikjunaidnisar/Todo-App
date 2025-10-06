@@ -232,7 +232,7 @@
 			}
 				
 				//message.classList.remove('error-message')
-			const res = await fetch("http://localhost:3000/signup",{
+			const res = await fetch("https://todo-app-f8vi.onrender.com/signup",{
 				method:'POST',
 				headers:{
 					"Content-Type":"application/json"
@@ -248,7 +248,7 @@
 				message.classList.add('error-message-show')
 				return
 			}
-			window.location.href=`http://localhost:3000${data.href}`
+			window.location.href=`https://todo-app-f8vi.onrender.com${data.href}`
 		})
     </script>
 </body>

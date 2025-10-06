@@ -319,7 +319,7 @@
            	 return allTodos()
            }
            
-				const res = await fetch(`http://localhost:3000/filter/${selectedStatus.value}`);
+				const res = await fetch(`https://todo-app-f8vi.onrender.com/filter/${selectedStatus.value}`);
 				          const data = await res.json();
 				          const parentList = document.querySelector(".task-list");
 				          parentList.innerHTML = '';
@@ -364,7 +364,7 @@
             }
             
             async function allTodos() {
-                const res = await fetch('http://localhost:3000/alltodos');
+                const res = await fetch('https://todo-app-f8vi.onrender.com/alltodos');
                 const data = await res.json();
                 const parentList = document.querySelector(".task-list");
                 parentList.innerHTML = ''; 
@@ -441,7 +441,7 @@
 						let data = {
 							status:"completed"
 						}
-                    	const res = await fetch(`http://localhost:3000/get/${itemTotoUpdate}`,{
+                    	const res = await fetch(`https://todo-app-f8vi.onrender.com/get/${itemTotoUpdate}`,{
                     		method:"put",
                     		headers:{
                     			"Content-type":"application/json"
@@ -450,7 +450,7 @@
                     	})
                         // REQUIRED CHANGE FOR FILTER: Update the data-status attribute
                         const fdata = res.json();
-                        window.location.href=`http://localhost:3000${fdata.href}`
+                        window.location.href=`https://todo-app-f8vi.onrender.com${fdata.href}`
                         
                     } else {
                         // Remove strikethrough class
@@ -463,7 +463,7 @@
                     	let data = {
                     	          status:"incomplete"
                     	      }
-                    	      const res = await fetch(`http://localhost:3000/get/${itemTotoUpdate}`,{
+                    	      const res = await fetch(`https://todo-app-f8vi.onrender.com/get/${itemTotoUpdate}`,{
                     	          method:"put",
                     	          headers:{
                     	              "Content-type":"application/json"
@@ -472,7 +472,7 @@
                     	      })
                         // REQUIRED CHANGE FOR FILTER: Update the data-status attribute
                         const fdata = res.json();
-                        window.location.href=`http://localhost:3000${fdata.href}`
+                        window.location.href=`https://todo-app-f8vi.onrender.com/${fdata.href}`
                     }
                     
                     // Immediately re-run the filter after status change to update the displayed list
@@ -500,7 +500,7 @@
                 };
 				
 					
-                const res = await fetch('http://localhost:3000/home', {
+                const res = await fetch('https://todo-app-f8vi.onrender.com/home', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -511,7 +511,7 @@
                 const fdata = await res.json();
                 
                 // Assuming 'data.href' is the correct property name from your POST response
-                window.location.href = `http://localhost:3000${fdata.href}`;
+                window.location.href = `https://todo-app-f8vi.onrender.com${fdata.href}`;
                 }
             });
 
@@ -531,7 +531,7 @@
                	let inputData={
                		task:taskInputValue
                	}
-               	const res = await fetch(`http://localhost:3000/get/${oldValue}`,{
+               	const res = await fetch(`https://todo-app-f8vi.onrender.com/get/${oldValue}`,{
                		method:"put",
                		headers:{
                			"Content-Type":"application/json"
@@ -540,7 +540,7 @@
                		
                	})
                	const data = await res.json()
-               	window.location.href=`http://localhost:3000${data.href}`
+               	window.location.href=`https://todo-app-f8vi.onrender.com${data.href}`
                	//alert(data.href)
                
                })
@@ -563,7 +563,7 @@
             	})
             	const liText = li.querySelector('.task-text').innerText
             		if(target.innerText=="Update"){
-            			const res = await fetch(`http://localhost:3000/home/todo/${liText}`)
+            			const res = await fetch(`https://todo-app-f8vi.onrender.com/home/todo/${liText}`)
             			const data = await res.json()
                 		const taskInput = document.querySelector("#task-input");
             			const submitButton = document.querySelector("#task-button");
@@ -590,11 +590,11 @@
 				if(target.classList.contains('delete-btn')){
 					const li = target.closest('.task-item')
 					const liText = li.querySelector('.task-text').innerText
-					const res = await fetch(`http://localhost:3000/home/todo/${liText}`,{
+					const res = await fetch(`https://todo-app-f8vi.onrender.com/home/todo/${liText}`,{
 						method:'delete'
 					})
 					const data = await res.json()
-					window.location.href =`http://localhost:3000${data.href}`
+					window.location.href =`https://todo-app-f8vi.onrender.com${data.href}`
 					   
 				}
 
